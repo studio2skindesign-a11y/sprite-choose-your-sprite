@@ -1,0 +1,79 @@
+.screen {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Full-bleed background */
+.bg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center top;
+  z-index: 0;
+  pointer-events: none;
+  user-select: none;
+}
+
+/* Badge sits near the top, centered */
+.badge {
+  position: absolute;
+  top: 12%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 62%;
+  z-index: 2;
+}
+
+.badge img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* Cans area anchored to the bottom half */
+.cans {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 65%;
+  z-index: 2;
+}
+
+/* Each can button is absolutely placed */
+.canBtn {
+  position: absolute;
+  bottom: 0;
+  width: 58%;
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  transition: opacity 0.35s ease;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+}
+
+.canBtn:first-child {
+  left: -3%;
+}
+
+.canBtn:last-child {
+  right: -3%;
+}
+
+.canBtn.dimmed {
+  opacity: 0.35;
+}
+
+.canImg {
+  width: 100%;
+  height: auto;
+  display: block;
+  user-select: none;
+  pointer-events: none;
+}

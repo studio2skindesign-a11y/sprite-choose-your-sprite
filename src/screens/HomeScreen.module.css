@@ -40,7 +40,7 @@
   bottom: 0;
   left: 0;
   right: 0;
-  height: 65%;
+  height: 74%;
   z-index: 2;
 }
 
@@ -48,7 +48,7 @@
 .canBtn {
   position: absolute;
   bottom: 0;
-  width: 58%;
+  width: 62%;
   background: none;
   border: none;
   padding: 0;
@@ -58,12 +58,16 @@
   touch-action: manipulation;
 }
 
+/* Zero Sugar — behind, left side */
 .canBtn:first-child {
-  left: -3%;
+  left: 2%;
+  z-index: 1;
 }
 
+/* Regular Sprite — in front, right side */
 .canBtn:last-child {
-  right: -3%;
+  right: 2%;
+  z-index: 2;
 }
 
 .canBtn.dimmed {

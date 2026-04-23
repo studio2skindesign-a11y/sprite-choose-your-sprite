@@ -1,3 +1,69 @@
+/* ── Montserrat Z ── */
+@font-face {
+  font-family: 'MontserratZ';
+  src: url('/assets/fonts/MontserratZ-Thin.otf') format('opentype');
+  font-weight: 100;
+  font-style: normal;
+  font-display: block;
+}
+@font-face {
+  font-family: 'MontserratZ';
+  src: url('/assets/fonts/MontserratZ-ExtraLight.otf') format('opentype');
+  font-weight: 200;
+  font-style: normal;
+  font-display: block;
+}
+@font-face {
+  font-family: 'MontserratZ';
+  src: url('/assets/fonts/MontserratZ-Light.otf') format('opentype');
+  font-weight: 300;
+  font-style: normal;
+  font-display: block;
+}
+@font-face {
+  font-family: 'MontserratZ';
+  src: url('/assets/fonts/MontserratZ-Regular.otf') format('opentype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: block;
+}
+@font-face {
+  font-family: 'MontserratZ';
+  src: url('/assets/fonts/MontserratZ-Medium.otf') format('opentype');
+  font-weight: 500;
+  font-style: normal;
+  font-display: block;
+}
+@font-face {
+  font-family: 'MontserratZ';
+  src: url('/assets/fonts/MontserratZ-SemiBold.otf') format('opentype');
+  font-weight: 600;
+  font-style: normal;
+  font-display: block;
+}
+@font-face {
+  font-family: 'MontserratZ';
+  src: url('/assets/fonts/MontserratZ-Bold.otf') format('opentype');
+  font-weight: 700;
+  font-style: normal;
+  font-display: block;
+}
+@font-face {
+  font-family: 'MontserratZ';
+  src: url('/assets/fonts/MontserratZ-ExtraBold.otf') format('opentype');
+  font-weight: 800;
+  font-style: normal;
+  font-display: block;
+}
+@font-face {
+  font-family: 'MontserratZ';
+  src: url('/assets/fonts/MontserratZ-Black.otf') format('opentype');
+  font-weight: 900;
+  font-style: normal;
+  font-display: block;
+}
+
+/* ── Reset ── */
 *, *::before, *::after {
   box-sizing: border-box;
   margin: 0;
@@ -11,6 +77,7 @@ html, body, #root {
 }
 
 body {
+  font-family: 'MontserratZ', sans-serif;
   background: #000;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;

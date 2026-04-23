@@ -1,0 +1,110 @@
+.screen {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.bg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  z-index: 0;
+  pointer-events: none;
+  user-select: none;
+}
+
+/* Centered content column */
+.content {
+  position: relative;
+  z-index: 1;
+  width: 82%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 18px;
+}
+
+/* Question card — PNG stretches to fit text content */
+.questionCard {
+  width: 100%;
+  background-image: url('/assets/question-card.png');
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+  padding: 7% 9%;
+  box-sizing: border-box;
+}
+
+.questionText {
+  width: 100%;
+  text-align: center;
+  color: #fff;
+  font-family: 'MontserratZ', sans-serif;
+  font-weight: 500;
+  font-size: clamp(20px, 4vw, 34px);
+  line-height: 1.55;
+  margin: 0;
+  word-break: break-word;
+}
+
+.questionText strong {
+  font-family: 'MontserratZ', sans-serif;
+  font-weight: 900;
+}
+
+/* Answer buttons */
+.answers {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.answerBtn {
+  position: relative;
+  width: 100%;
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  transition: opacity 0.3s ease, transform 0.15s ease;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+}
+
+.btnBg {
+  width: 100%;
+  height: auto;
+  display: block;
+  user-select: none;
+  pointer-events: none;
+}
+
+.answerText {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  font-family: 'MontserratZ', sans-serif;
+  font-weight: 700;
+  font-size: clamp(19px, 3.6vw, 30px);
+  letter-spacing: 0.02em;
+  pointer-events: none;
+}
+
+.answerBtn.selected {
+  transform: scale(0.97);
+  opacity: 0.85;
+}
+
+.answerBtn.dimmed {
+  opacity: 0.4;
+}

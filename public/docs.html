@@ -1,0 +1,606 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sprite App — Documentation</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: #071a0c;
+      font-family: system-ui, -apple-system, sans-serif;
+      color: #fff;
+      min-height: 100vh;
+      padding: 48px 20px 80px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .wrapper {
+      width: 100%;
+      max-width: 680px;
+      display: flex;
+      flex-direction: column;
+      gap: 40px;
+    }
+
+    /* ── Header ── */
+    .header {
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+      padding-bottom: 40px;
+      border-bottom: 1px solid rgba(255,255,255,0.07);
+    }
+
+    .logo-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(198,241,53,0.1);
+      border: 1px solid rgba(198,241,53,0.3);
+      border-radius: 50px;
+      padding: 6px 16px;
+      font-size: 11px;
+      font-weight: 700;
+      color: #C6F135;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+
+    h1 {
+      font-size: 36px;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      line-height: 1.1;
+    }
+
+    h1 span { color: #C6F135; }
+
+    .header-sub {
+      font-size: 14px;
+      color: rgba(255,255,255,0.4);
+      line-height: 1.6;
+      max-width: 420px;
+    }
+
+    /* ── Section ── */
+    .section {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .section-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .section-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 11px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 19px;
+      flex-shrink: 0;
+      background: rgba(198,241,53,0.1);
+    }
+
+    h2 {
+      font-size: 18px;
+      font-weight: 700;
+      color: #fff;
+    }
+
+    .section-num {
+      font-size: 11px;
+      font-weight: 700;
+      color: rgba(198,241,53,0.5);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+
+    /* ── Card ── */
+    .card {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 16px;
+      padding: 20px 22px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .card.highlight {
+      background: rgba(198,241,53,0.06);
+      border-color: rgba(198,241,53,0.2);
+    }
+
+    p {
+      font-size: 14px;
+      color: rgba(255,255,255,0.65);
+      line-height: 1.7;
+    }
+
+    strong { color: #fff; font-weight: 600; }
+
+    /* ── Flow steps ── */
+    .flow {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+
+    .flow-step {
+      display: flex;
+      align-items: flex-start;
+      gap: 16px;
+      padding: 16px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+    }
+
+    .flow-step:last-child { border-bottom: none; padding-bottom: 0; }
+    .flow-step:first-child { padding-top: 0; }
+
+    .flow-num {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: #C6F135;
+      color: #071a0c;
+      font-size: 13px;
+      font-weight: 800;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+
+    .flow-body { flex: 1; }
+    .flow-title { font-size: 14px; font-weight: 700; color: #fff; margin-bottom: 4px; }
+    .flow-desc { font-size: 13px; color: rgba(255,255,255,0.5); line-height: 1.6; }
+
+    /* ── Prize table ── */
+    .prize-table {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .prize-row {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.07);
+      border-radius: 12px;
+      padding: 14px 16px;
+    }
+
+    .prize-emoji {
+      font-size: 24px;
+      width: 36px;
+      text-align: center;
+      flex-shrink: 0;
+    }
+
+    .prize-info { flex: 1; }
+    .prize-name { font-size: 14px; font-weight: 700; color: #fff; margin-bottom: 3px; }
+    .prize-detail { font-size: 12px; color: rgba(255,255,255,0.45); line-height: 1.5; }
+
+    .prize-tag {
+      font-size: 12px;
+      font-weight: 700;
+      padding: 4px 10px;
+      border-radius: 50px;
+      white-space: nowrap;
+    }
+
+    .tag-lime { background: rgba(198,241,53,0.15); color: #C6F135; }
+    .tag-teal { background: rgba(126,232,162,0.15); color: #7ee8a2; }
+
+    /* ── Formula block ── */
+    .formula {
+      background: rgba(0,0,0,0.35);
+      border: 1px solid rgba(198,241,53,0.15);
+      border-radius: 12px;
+      padding: 16px 20px;
+      font-family: monospace;
+      font-size: 13px;
+      color: #C6F135;
+      line-height: 1.8;
+    }
+
+    .formula .comment { color: rgba(255,255,255,0.3); }
+
+    /* ── Stats grid ── */
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+    }
+
+    .stat-card {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 14px;
+      padding: 16px 12px;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .stat-value {
+      font-size: 28px;
+      font-weight: 800;
+      color: #C6F135;
+      line-height: 1;
+    }
+
+    .stat-label {
+      font-size: 11px;
+      color: rgba(255,255,255,0.4);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    /* ── Dashboard list ── */
+    .feature-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .feature-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      font-size: 14px;
+      color: rgba(255,255,255,0.6);
+      line-height: 1.6;
+    }
+
+    .feature-item::before {
+      content: '✓';
+      color: #C6F135;
+      font-weight: 700;
+      font-size: 13px;
+      margin-top: 2px;
+      flex-shrink: 0;
+    }
+
+    /* ── Preview URLs ── */
+    .url-list {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .url-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 10px 14px;
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.06);
+      border-radius: 10px;
+    }
+
+    .url-code {
+      font-family: monospace;
+      font-size: 13px;
+      color: rgba(198,241,53,0.8);
+      flex: 1;
+    }
+
+    .url-desc {
+      font-size: 12px;
+      color: rgba(255,255,255,0.4);
+    }
+
+    /* ── Divider ── */
+    .divider {
+      height: 1px;
+      background: rgba(255,255,255,0.06);
+    }
+
+    /* ── Footer ── */
+    .footer {
+      text-align: center;
+      font-size: 12px;
+      color: rgba(255,255,255,0.2);
+      line-height: 1.8;
+      padding-top: 8px;
+    }
+
+    a { color: #C6F135; text-decoration: none; }
+    a:hover { text-decoration: underline; }
+  </style>
+</head>
+<body>
+  <div class="wrapper">
+
+    <!-- Header -->
+    <div class="header">
+      <div class="logo-badge">🟢 Sprite Activation App</div>
+      <h1>App <span>Documentation</span></h1>
+      <p class="header-sub">
+        A tablet-based brand activation game for 3-day retail events.<br>
+        Players pick a Sprite can, answer a trivia question, and win a prize.
+      </p>
+    </div>
+
+    <!-- 1. Overview -->
+    <div class="section">
+      <div class="section-header">
+        <div class="section-icon">📋</div>
+        <div>
+          <div class="section-num">Section 01</div>
+          <h2>App Overview</h2>
+        </div>
+      </div>
+      <div class="card">
+        <div class="stats">
+          <div class="stat-card">
+            <span class="stat-value">3</span>
+            <span class="stat-label">Event Days</span>
+          </div>
+          <div class="stat-card">
+            <span class="stat-value">30</span>
+            <span class="stat-label">Bottles</span>
+          </div>
+          <div class="stat-card">
+            <span class="stat-value">2000</span>
+            <span class="stat-label">Stress Balls</span>
+          </div>
+        </div>
+        <p>
+          A full-screen tablet app deployed at modern trade / retail activations.
+          Players engage with the Sprite brand through a trivia quiz and are rewarded with
+          a physical prize. All prize distribution is handled automatically — no staff input needed.
+        </p>
+        <p>
+          <strong>Technology:</strong> React + Vite, CSS Modules, localStorage for persistent data.
+          Self-hosted MontserratZ font (all 9 weights) for fully offline use at events.
+        </p>
+      </div>
+    </div>
+
+    <!-- 2. Screen Flow -->
+    <div class="section">
+      <div class="section-header">
+        <div class="section-icon">🔄</div>
+        <div>
+          <div class="section-num">Section 02</div>
+          <h2>Screen Flow</h2>
+        </div>
+      </div>
+      <div class="card">
+        <div class="flow">
+          <div class="flow-step">
+            <div class="flow-num">1</div>
+            <div class="flow-body">
+              <div class="flow-title">Home Screen</div>
+              <div class="flow-desc">
+                Player sees two overlapping Sprite cans — Zero Sugar (left) and Regular (right).
+                Tapping a can triggers a glow effect and a 700ms delay before advancing.
+                The burger menu (top-right) opens the staff dashboard.
+              </div>
+            </div>
+          </div>
+          <div class="flow-step">
+            <div class="flow-num">2</div>
+            <div class="flow-body">
+              <div class="flow-title">Quiz Screen</div>
+              <div class="flow-desc">
+                A Greek trivia question appears inside a branded card frame.
+                Three answer buttons are shown. Tapping any answer triggers a scale animation
+                and an 800ms delay, then proceeds to the result — both correct and wrong answers
+                advance to the win screen (all players win a prize).
+              </div>
+            </div>
+          </div>
+          <div class="flow-step">
+            <div class="flow-num">3</div>
+            <div class="flow-body">
+              <div class="flow-title">Win Screen</div>
+              <div class="flow-desc">
+                Shows "ΣΥΓΧΑΡΗΤΗΡΙΑ ΚΕΡΔΙΣΕΣ" with a spring-animated gift image and prize name.
+                The prize type (bottle or stress ball) is determined automatically by the
+                prize distribution logic. A return button sends the player back to the Home Screen.
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 3. Prize System -->
+    <div class="section">
+      <div class="section-header">
+        <div class="section-icon">🎁</div>
+        <div>
+          <div class="section-num">Section 03</div>
+          <h2>Prize Distribution System</h2>
+        </div>
+      </div>
+
+      <div class="card highlight">
+        <p>
+          The prize system uses a <strong>global play counter</strong> stored in localStorage.
+          Every play increments the counter. Every 66th play triggers a bottle prize.
+          All other plays receive a stress ball. There are no daily limits — the counter
+          runs continuously across all 3 event days.
+        </p>
+        <div class="formula">
+          totalGames % 66 === 0  →  <strong>Sprite Bottle 🍶</strong><br>
+          <span class="comment">(games 66, 132, 198, 264, 330 … up to 1980)</span><br><br>
+          totalGames % 66 !== 0  →  <strong>Stress Ball 🟢</strong><br>
+          <span class="comment">(all other plays)</span>
+        </div>
+      </div>
+
+      <div class="prize-table">
+        <div class="prize-row">
+          <div class="prize-emoji">🍶</div>
+          <div class="prize-info">
+            <div class="prize-name">Sprite Bottle</div>
+            <div class="prize-detail">Given every 66 plays · 30 bottles total · stops after bottle #30</div>
+          </div>
+          <div class="prize-tag tag-lime">1 per 66 plays</div>
+        </div>
+        <div class="prize-row">
+          <div class="prize-emoji">🟢</div>
+          <div class="prize-info">
+            <div class="prize-name">Antistress Ball</div>
+            <div class="prize-detail">Given on every other play · ~2000 available for the event</div>
+          </div>
+          <div class="prize-tag tag-teal">All other plays</div>
+        </div>
+      </div>
+
+      <div class="card">
+        <p>
+          <strong>Example sequence:</strong> Plays 1–65 → stress ball &nbsp;·&nbsp;
+          Play 66 → bottle &nbsp;·&nbsp; Plays 67–131 → stress ball &nbsp;·&nbsp;
+          Play 132 → bottle &nbsp;·&nbsp; and so on.
+        </p>
+        <p>
+          After all <strong>30 bottles</strong> have been distributed (play 1980),
+          the remaining plays continue to receive stress balls. The counter never resets
+          unless the staff manually resets via the dashboard.
+        </p>
+      </div>
+    </div>
+
+    <!-- 4. Dashboard -->
+    <div class="section">
+      <div class="section-header">
+        <div class="section-icon">📊</div>
+        <div>
+          <div class="section-num">Section 04</div>
+          <h2>Staff Dashboard</h2>
+        </div>
+      </div>
+      <div class="card">
+        <p>
+          Accessible via the <strong>hamburger menu (☰)</strong> on the Home Screen — top-right corner.
+          Opens immediately with no PIN required.
+        </p>
+        <div class="feature-list">
+          <div class="feature-item">Global totals — Total Plays, Bottles Given, Stress Balls Given</div>
+          <div class="feature-item">"Next bottle in X plays" countdown with large highlighted number</div>
+          <div class="feature-item">Per-day breakdown — each calendar day shows its own play count and prize totals with fill-bar progress indicators</div>
+          <div class="feature-item">Reset button — clears all localStorage data after a two-step confirmation (requires tapping "OK, Reset" to confirm)</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 5. Data Storage -->
+    <div class="section">
+      <div class="section-header">
+        <div class="section-icon">💾</div>
+        <div>
+          <div class="section-num">Section 05</div>
+          <h2>Data Storage</h2>
+        </div>
+      </div>
+      <div class="card">
+        <p>
+          All data is stored in the browser's <strong>localStorage</strong> under the key
+          <code style="background:rgba(255,255,255,0.08);border-radius:4px;padding:1px 6px;font-size:12px;color:rgba(255,255,255,0.6)">spriteEventData</code>.
+          This means data persists across page refreshes and browser restarts on the same device,
+          but is isolated to that tablet. No server or internet connection is required.
+        </p>
+        <p>
+          <strong>Data tracked:</strong> global total plays · global bottles given ·
+          global stress balls given · per-day records (date, plays, bottles, stress balls).
+        </p>
+      </div>
+    </div>
+
+    <!-- 6. Preview Mode -->
+    <div class="section">
+      <div class="section-header">
+        <div class="section-icon">🔗</div>
+        <div>
+          <div class="section-num">Section 06</div>
+          <h2>Preview Mode (Dev Only)</h2>
+        </div>
+      </div>
+      <div class="card">
+        <p>Add a <code style="background:rgba(255,255,255,0.08);border-radius:4px;padding:1px 6px;font-size:12px;color:#C6F135">?preview=</code> URL parameter to jump directly to any screen without playing through the full flow. Has no effect in the production build.</p>
+        <div class="url-list">
+          <div class="url-row">
+            <span class="url-code">/?preview=win-ball</span>
+            <span class="url-desc">Win screen · stress ball</span>
+          </div>
+          <div class="url-row">
+            <span class="url-code">/?preview=win-bottle</span>
+            <span class="url-desc">Win screen · bottle</span>
+          </div>
+          <div class="url-row">
+            <span class="url-code">/?preview=quiz</span>
+            <span class="url-desc">Quiz screen</span>
+          </div>
+          <div class="url-row">
+            <span class="url-code">/</span>
+            <span class="url-desc">Home screen (normal)</span>
+          </div>
+        </div>
+        <p>
+          Or open the <a href="/preview.html">interactive preview page →</a>
+        </p>
+      </div>
+    </div>
+
+    <!-- 7. Assets -->
+    <div class="section">
+      <div class="section-header">
+        <div class="section-icon">🗂️</div>
+        <div>
+          <div class="section-num">Section 07</div>
+          <h2>Asset Structure</h2>
+        </div>
+      </div>
+      <div class="card">
+        <div class="formula" style="color: rgba(255,255,255,0.7); font-size: 12px; line-height: 2;">
+public/assets/<br>
+├── <span style="color:#C6F135">bg-home.png</span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Home screen background<br>
+├── <span style="color:#C6F135">bg-quiz.png</span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Quiz screen background<br>
+├── <span style="color:#C6F135">badge-choose.png</span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; "Choose your can" badge<br>
+├── <span style="color:#C6F135">question-card.png</span> &nbsp;&nbsp;&nbsp;&nbsp; Question card frame (CSS bg)<br>
+├── <span style="color:#C6F135">btn-answer.png</span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Answer button frame<br>
+├── <span style="color:#C6F135">can-zero-normal.png</span> &nbsp;&nbsp; Zero Sugar can (default)<br>
+├── <span style="color:#C6F135">can-zero-glow.png</span> &nbsp;&nbsp;&nbsp;&nbsp; Zero Sugar can (selected)<br>
+├── <span style="color:#C6F135">can-regular-normal.png</span> Regular can (default)<br>
+├── <span style="color:#C6F135">can-regular-glow.png</span> &nbsp; Regular can (selected)<br>
+├── GIFTS/<br>
+│ &nbsp;&nbsp;├── <span style="color:#7ee8a2">GIFT_SCREEN_BG.png</span> &nbsp; Win screen background<br>
+│ &nbsp;&nbsp;├── <span style="color:#7ee8a2">SPRITE_BOTTLE.png</span> &nbsp;&nbsp; Bottle prize image<br>
+│ &nbsp;&nbsp;└── <span style="color:#7ee8a2">stress-ball.png</span> &nbsp;&nbsp;&nbsp;&nbsp; Stress ball prize image<br>
+└── fonts/<br>
+&nbsp;&nbsp;&nbsp;&nbsp;└── MontserratZ (9 weights, .otf — self-hosted for offline use)
+        </div>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="footer">
+      Sprite Brand Activation App &nbsp;·&nbsp; Built with React + Vite &nbsp;·&nbsp; 2025<br>
+      <a href="/preview.html">Preview Mode</a>
+    </div>
+
+  </div>
+</body>
+</html>

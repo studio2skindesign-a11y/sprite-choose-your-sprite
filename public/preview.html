@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sprite App — Preview</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: #071a0c;
+      font-family: system-ui, -apple-system, sans-serif;
+      color: #fff;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 40px 20px;
+    }
+
+    .wrapper {
+      width: 100%;
+      max-width: 560px;
+      display: flex;
+      flex-direction: column;
+      gap: 32px;
+    }
+
+    /* Header */
+    .header {
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(198,241,53,0.12);
+      border: 1px solid rgba(198,241,53,0.35);
+      border-radius: 50px;
+      padding: 5px 14px;
+      font-size: 11px;
+      font-weight: 700;
+      color: #C6F135;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+
+    .dot {
+      width: 6px;
+      height: 6px;
+      background: #C6F135;
+      border-radius: 50%;
+      animation: pulse 1.8s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.4; transform: scale(0.7); }
+    }
+
+    h1 {
+      font-size: 32px;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      line-height: 1.1;
+    }
+
+    h1 span { color: #C6F135; }
+
+    .subtitle {
+      font-size: 14px;
+      color: rgba(255,255,255,0.4);
+      line-height: 1.5;
+    }
+
+    /* Cards grid */
+    .cards {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .section-label {
+      font-size: 10px;
+      font-weight: 700;
+      color: rgba(255,255,255,0.25);
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      padding: 0 4px;
+      margin-bottom: 2px;
+      margin-top: 8px;
+    }
+
+    .section-label:first-child { margin-top: 0; }
+
+    a.card {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding: 18px 20px;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 16px;
+      text-decoration: none;
+      transition: background 0.2s, border-color 0.2s, transform 0.15s;
+      cursor: pointer;
+    }
+
+    a.card:hover {
+      background: rgba(198,241,53,0.07);
+      border-color: rgba(198,241,53,0.3);
+      transform: translateY(-1px);
+    }
+
+    a.card:active { transform: scale(0.99); }
+
+    .icon {
+      width: 46px;
+      height: 46px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 22px;
+      flex-shrink: 0;
+    }
+
+    .icon-green  { background: rgba(198,241,53,0.12); }
+    .icon-teal   { background: rgba(126,232,162,0.12); }
+    .icon-white  { background: rgba(255,255,255,0.06); }
+    .icon-blue   { background: rgba(100,160,255,0.12); }
+
+    .card-body {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+    }
+
+    .card-title {
+      font-size: 15px;
+      font-weight: 700;
+      color: #fff;
+    }
+
+    .card-url {
+      font-size: 12px;
+      font-family: monospace;
+      color: rgba(198,241,53,0.7);
+    }
+
+    .arrow {
+      font-size: 18px;
+      color: rgba(255,255,255,0.2);
+      transition: color 0.2s, transform 0.2s;
+    }
+
+    a.card:hover .arrow {
+      color: #C6F135;
+      transform: translateX(3px);
+    }
+
+    /* Footer note */
+    .note {
+      text-align: center;
+      font-size: 12px;
+      color: rgba(255,255,255,0.2);
+      line-height: 1.7;
+      border-top: 1px solid rgba(255,255,255,0.06);
+      padding-top: 24px;
+    }
+
+    .note code {
+      background: rgba(255,255,255,0.08);
+      border-radius: 4px;
+      padding: 1px 6px;
+      font-size: 11px;
+      color: rgba(255,255,255,0.4);
+    }
+  </style>
+</head>
+<body>
+  <div class="wrapper">
+
+    <div class="header">
+      <div class="badge"><div class="dot"></div> Dev Mode Active</div>
+      <h1>Screen <span>Preview</span></h1>
+      <p class="subtitle">Click any card to jump directly to that screen.<br>No need to play through the full flow.</p>
+    </div>
+
+    <div class="cards">
+
+      <p class="section-label">Win Screens</p>
+
+      <a class="card" href="/?preview=win-ball">
+        <div class="icon icon-teal">🟢</div>
+        <div class="card-body">
+          <span class="card-title">Win — Stress Ball</span>
+          <span class="card-url">/?preview=win-ball</span>
+        </div>
+        <span class="arrow">→</span>
+      </a>
+
+      <a class="card" href="/?preview=win-bottle">
+        <div class="icon icon-green">🍶</div>
+        <div class="card-body">
+          <span class="card-title">Win — Sprite Bottle</span>
+          <span class="card-url">/?preview=win-bottle</span>
+        </div>
+        <span class="arrow">→</span>
+      </a>
+
+      <p class="section-label">Other Screens</p>
+
+      <a class="card" href="/?preview=quiz">
+        <div class="icon icon-blue">❓</div>
+        <div class="card-body">
+          <span class="card-title">Quiz Screen</span>
+          <span class="card-url">/?preview=quiz</span>
+        </div>
+        <span class="arrow">→</span>
+      </a>
+
+      <a class="card" href="/">
+        <div class="icon icon-white">🏠</div>
+        <div class="card-body">
+          <span class="card-title">Home Screen</span>
+          <span class="card-url">/</span>
+        </div>
+        <span class="arrow">→</span>
+      </a>
+
+    </div>
+
+    <p class="note">
+      Only works while the dev server is running (<code>npm run dev</code>).<br>
+      The <code>?preview=</code> param has no effect in production.
+    </p>
+
+  </div>
+</body>
+</html>

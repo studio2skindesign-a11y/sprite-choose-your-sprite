@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import styles from './HomeScreen.module.css'
+import BurgerMenu from '../components/BurgerMenu'
 
 const CANS = [
   {
@@ -33,6 +34,8 @@ export default function HomeScreen({ onSelectCan }) {
         className={styles.bg}
         draggable={false}
       />
+
+      <BurgerMenu />
 
       <div className={styles.badge}>
         <img src="/assets/badge-choose.png" alt="Διάλεξε την αγαπημένη σου" />

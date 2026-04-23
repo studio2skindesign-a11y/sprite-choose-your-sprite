@@ -1,0 +1,67 @@
+.screen {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.bg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center top;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.content {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: clamp(16px, 3vh, 32px);
+  padding: 0 10%;
+  text-align: center;
+}
+
+.title {
+  font-family: 'MontserratZ', sans-serif;
+  font-weight: 900;
+  font-size: clamp(28px, 6vw, 54px);
+  color: #C6F135;
+}
+
+.message {
+  font-family: 'MontserratZ', sans-serif;
+  font-weight: 400;
+  font-size: clamp(16px, 3vw, 26px);
+  color: #fff;
+  line-height: 1.6;
+  white-space: pre-line;
+}
+
+.homeBtn {
+  font-family: 'MontserratZ', sans-serif;
+  font-weight: 700;
+  font-size: clamp(14px, 2.4vw, 22px);
+  letter-spacing: 0.06em;
+  color: #1a4d1a;
+  background: #C6F135;
+  border: none;
+  border-radius: 50px;
+  padding: clamp(12px, 2vh, 20px) clamp(28px, 6%, 52px);
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+  transition: opacity 0.2s ease;
+}
+
+.homeBtn:active {
+  opacity: 0.8;
+}

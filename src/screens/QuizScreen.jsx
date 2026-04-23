@@ -46,7 +46,6 @@ export default function QuizScreen({ onWin }) {
               onClick={() => handleAnswer(answer)}
               aria-label={answer}
             >
-              <img src="/assets/btn-answer.png" alt="" className={styles.btnBg} draggable={false} />
               <span className={styles.answerText}>{answer}</span>
             </button>
           ))}

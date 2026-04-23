@@ -69,35 +69,33 @@
 .answerBtn {
   position: relative;
   width: 100%;
-  background: none;
+  aspect-ratio: 548 / 149;
+  background-image: url('/assets/btn-answer.png');
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+  background-color: transparent;
+  -webkit-appearance: none;
+  appearance: none;
   border: none;
+  outline: none;
   padding: 0;
   cursor: pointer;
   transition: opacity 0.3s ease, transform 0.15s ease;
   -webkit-tap-highlight-color: transparent;
   touch-action: manipulation;
-}
-
-.btnBg {
-  width: 100%;
-  height: auto;
-  display: block;
-  user-select: none;
-  pointer-events: none;
-}
-
-.answerText {
-  position: absolute;
-  inset: 0;
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+.answerText {
   color: #fff;
   font-family: 'MontserratZ', sans-serif;
   font-weight: 700;
   font-size: clamp(19px, 3.6vw, 30px);
   letter-spacing: 0.02em;
   pointer-events: none;
+  user-select: none;
 }
 
 .answerBtn.selected {

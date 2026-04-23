@@ -31,7 +31,7 @@ export default function QuizScreen({ onWin }) {
 
         <div className={styles.questionCard}>
           <p className={styles.questionText}>
-            Ποια Ελληνική ομάδα έχει τις περισσότερες νίκες στην <strong>Ευρώπη</strong>;
+            Ποια ελληνική ομάδα έχει τους περισσότερους τίτλους στην <strong>Ευρωλίγκα</strong>;
           </p>
         </div>
 

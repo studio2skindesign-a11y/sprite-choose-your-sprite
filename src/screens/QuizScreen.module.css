@@ -105,6 +105,37 @@
   opacity: 0.85;
 }
 
+.answerBtn.wrong {
+  transform: scale(0.97);
+  animation: shake 0.4s ease;
+  filter: brightness(0.6) saturate(0.4);
+}
+
 .answerBtn.dimmed {
   opacity: 0.4;
+}
+
+@keyframes shake {
+  0%, 100% { transform: scale(0.97) translateX(0); }
+  25%       { transform: scale(0.97) translateX(-8px); }
+  75%       { transform: scale(0.97) translateX(8px); }
+}
+
+.retryMsg {
+  font-family: 'MontserratZ', sans-serif;
+  font-weight: 700;
+  font-size: clamp(18px, 3.5vw, 28px);
+  color: #ff4d4d;
+  letter-spacing: 0.06em;
+  text-align: center;
+  opacity: 0;
+  transform: translateY(6px);
+  transition: opacity 0.25s ease, transform 0.25s ease;
+  pointer-events: none;
+  text-shadow: 0 2px 12px rgba(0,0,0,0.5);
+}
+
+.retryVisible {
+  opacity: 1;
+  transform: translateY(0);
 }

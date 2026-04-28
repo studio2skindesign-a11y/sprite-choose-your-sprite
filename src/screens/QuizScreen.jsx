@@ -1,8 +1,8 @@
 import { useState } from 'react'
 import styles from './QuizScreen.module.css'
 
-const ANSWERS = ['Παναθηναικός', 'Ολυμπιακός', 'ΠΑΟΚ']
-const CORRECT  = 'Παναθηναικός'
+const ANSWERS = ['Παναθηναϊκός', 'Ολυμπιακός', 'ΠΑΟΚ']
+const CORRECT  = 'Παναθηναϊκός'
 
 export default function QuizScreen({ onWin }) {
   const [selected, setSelected] = useState(null)
@@ -52,7 +52,7 @@ export default function QuizScreen({ onWin }) {
         </div>
 
         <div className={`${styles.retryMsg} ${isWrong ? styles.retryVisible : ''}`}>
-          Προσπαθησε ξανα
+          προσπάθησε ξανά
         </div>
 
       </div>

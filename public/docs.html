@@ -123,6 +123,11 @@
       border-color: rgba(198,241,53,0.2);
     }
 
+    .card.highlight-orange {
+      background: rgba(245,166,35,0.06);
+      border-color: rgba(245,166,35,0.25);
+    }
+
     p {
       font-size: 14px;
       color: rgba(255,255,255,0.65);
@@ -185,6 +190,11 @@
       padding: 14px 16px;
     }
 
+    .prize-row.special {
+      background: rgba(245,166,35,0.05);
+      border-color: rgba(245,166,35,0.2);
+    }
+
     .prize-emoji {
       font-size: 24px;
       width: 36px;
@@ -204,8 +214,9 @@
       white-space: nowrap;
     }
 
-    .tag-lime { background: rgba(198,241,53,0.15); color: #C6F135; }
-    .tag-teal { background: rgba(126,232,162,0.15); color: #7ee8a2; }
+    .tag-lime   { background: rgba(198,241,53,0.15);  color: #C6F135; }
+    .tag-teal   { background: rgba(126,232,162,0.15); color: #7ee8a2; }
+    .tag-orange { background: rgba(245,166,35,0.15);  color: #f5a623; }
 
     /* ── Formula block ── */
     .formula {
@@ -220,11 +231,13 @@
     }
 
     .formula .comment { color: rgba(255,255,255,0.3); }
+    .formula .orange  { color: #f5a623; }
+    .formula .teal    { color: #7ee8a2; }
 
     /* ── Stats grid ── */
     .stats {
       display: grid;
-      grid-template-columns: repeat(3, 1fr);
+      grid-template-columns: repeat(4, 1fr);
       gap: 10px;
     }
 
@@ -253,7 +266,7 @@
       letter-spacing: 0.08em;
     }
 
-    /* ── Dashboard list ── */
+    /* ── Feature list ── */
     .feature-list {
       display: flex;
       flex-direction: column;
@@ -324,6 +337,14 @@
 
     a { color: #C6F135; text-decoration: none; }
     a:hover { text-decoration: underline; }
+
+    code {
+      background: rgba(255,255,255,0.08);
+      border-radius: 4px;
+      padding: 1px 6px;
+      font-size: 12px;
+      color: rgba(255,255,255,0.6);
+    }
   </style>
 </head>
 <body>
@@ -361,6 +382,10 @@
           <div class="stat-card">
             <span class="stat-value">2000</span>
             <span class="stat-label">Stress Balls</span>
+          </div>
+          <div class="stat-card">
+            <span class="stat-value" style="color:#f5a623">3</span>
+            <span class="stat-label">Bowfell Plus</span>
           </div>
         </div>
         <p>
@@ -403,9 +428,9 @@
               <div class="flow-title">Quiz Screen</div>
               <div class="flow-desc">
                 A Greek trivia question appears inside a branded card frame.
-                Three answer buttons are shown. Tapping any answer triggers a scale animation
-                and an 800ms delay, then proceeds to the result — both correct and wrong answers
-                advance to the win screen (all players win a prize).
+                Three answer buttons are shown. Tapping the correct answer proceeds to the win screen
+                after an 800ms delay. Wrong answers show "προσπάθησε ξανά" and reset after 1.5s —
+                the player must answer correctly to win.
               </div>
             </div>
           </div>
@@ -415,8 +440,9 @@
               <div class="flow-title">Win Screen</div>
               <div class="flow-desc">
                 Shows "ΣΥΓΧΑΡΗΤΗΡΙΑ ΚΕΡΔΙΣΕΣ" with a spring-animated gift image and prize name.
-                The prize type (bottle or stress ball) is determined automatically by the
-                prize distribution logic. A return button sends the player back to the Home Screen.
+                The prize type is determined automatically by the prize distribution logic
+                at the moment the quiz is answered correctly.
+                A return button sends the player back to the Home Screen.
               </div>
             </div>
           </div>
@@ -434,27 +460,46 @@
         </div>
       </div>
 
+      <div class="card highlight-orange">
+        <p>
+          <strong>Majority Bowfell Plus</strong> is the top prize — awarded to the
+          <strong>100th player of each event day</strong>, once per day, for a maximum of
+          <strong>3 total</strong> (one per day across the 3-day event).
+          It takes priority over all other prizes when triggered.
+        </p>
+      </div>
+
       <div class="card highlight">
         <p>
-          The prize system uses a <strong>global play counter</strong> stored in localStorage.
-          Every play increments the counter. Every 66th play triggers a bottle prize.
-          All other plays receive a stress ball. There are no daily limits — the counter
-          runs continuously across all 3 event days.
+          For all other plays, the system uses a <strong>global play counter</strong> stored in
+          localStorage. Every 66th play triggers a bottle prize. All remaining plays receive a
+          stress ball. The global counter runs continuously across all 3 event days.
         </p>
         <div class="formula">
+          <span class="comment">— checked first, each day —</span><br>
+          today's play #100 + Bowfell available  →  <span class="orange">Majority Bowfell Plus 🎽</span><br><br>
+          <span class="comment">— otherwise —</span><br>
           totalGames % 66 === 0  →  <strong>Sprite Bottle 🍶</strong><br>
-          <span class="comment">(games 66, 132, 198, 264, 330 … up to 1980)</span><br><br>
-          totalGames % 66 !== 0  →  <strong>Stress Ball 🟢</strong><br>
+          <span class="comment">(plays 66, 132, 198 … up to game 1980)</span><br><br>
+          totalGames % 66 !== 0  →  <span class="teal">Antistress Ball 🟢</span><br>
           <span class="comment">(all other plays)</span>
         </div>
       </div>
 
       <div class="prize-table">
+        <div class="prize-row special">
+          <div class="prize-emoji">🎽</div>
+          <div class="prize-info">
+            <div class="prize-name">Majority Bowfell Plus</div>
+            <div class="prize-detail">Awarded to the 100th player of each day · max 3 total (1 per day) · highest priority prize</div>
+          </div>
+          <div class="prize-tag tag-orange">Play #100/day</div>
+        </div>
         <div class="prize-row">
           <div class="prize-emoji">🍶</div>
           <div class="prize-info">
             <div class="prize-name">Sprite Bottle</div>
-            <div class="prize-detail">Given every 66 plays · 30 bottles total · stops after bottle #30</div>
+            <div class="prize-detail">Given every 66 plays globally · 30 bottles total · stops after bottle #30</div>
           </div>
           <div class="prize-tag tag-lime">1 per 66 plays</div>
         </div>
@@ -470,14 +515,16 @@
 
       <div class="card">
         <p>
-          <strong>Example sequence:</strong> Plays 1–65 → stress ball &nbsp;·&nbsp;
-          Play 66 → bottle &nbsp;·&nbsp; Plays 67–131 → stress ball &nbsp;·&nbsp;
-          Play 132 → bottle &nbsp;·&nbsp; and so on.
+          <strong>Example — Day 1:</strong> Plays 1–65 → stress ball &nbsp;·&nbsp;
+          Play 66 → bottle &nbsp;·&nbsp; Plays 67–99 → stress ball &nbsp;·&nbsp;
+          Play 100 → <strong style="color:#f5a623">Majority Bowfell Plus</strong> &nbsp;·&nbsp;
+          Plays 101–131 → stress ball &nbsp;·&nbsp; Play 132 → bottle &nbsp;·&nbsp; and so on.
         </p>
         <p>
-          After all <strong>30 bottles</strong> have been distributed (play 1980),
-          the remaining plays continue to receive stress balls. The counter never resets
-          unless the staff manually resets via the dashboard.
+          After all <strong>30 bottles</strong> have been distributed (play 1980 globally),
+          remaining plays receive stress balls. After all <strong>3 Bowfell Plus</strong> prizes are
+          given (one per day over 3 days), the 100th play of any subsequent day gets a stress ball
+          instead. No counter resets unless staff manually resets via the dashboard.
         </p>
       </div>
     </div>
@@ -497,9 +544,9 @@
           Opens immediately with no PIN required.
         </p>
         <div class="feature-list">
-          <div class="feature-item">Global totals — Total Plays, Bottles Given, Stress Balls Given</div>
+          <div class="feature-item">Global totals — Total Plays, Bottles Given, Stress Balls Given, Bowfell Plus Given (shown as X / 3)</div>
           <div class="feature-item">"Next bottle in X plays" countdown with large highlighted number</div>
-          <div class="feature-item">Per-day breakdown — each calendar day shows its own play count and prize totals with fill-bar progress indicators</div>
+          <div class="feature-item">Per-day breakdown — each calendar day shows its own play count and prize totals with fill-bar progress indicators. Days where a Bowfell Plus was given are highlighted.</div>
           <div class="feature-item">Reset button — clears all localStorage data after a two-step confirmation (requires tapping "OK, Reset" to confirm)</div>
         </div>
       </div>
@@ -517,13 +564,14 @@
       <div class="card">
         <p>
           All data is stored in the browser's <strong>localStorage</strong> under the key
-          <code style="background:rgba(255,255,255,0.08);border-radius:4px;padding:1px 6px;font-size:12px;color:rgba(255,255,255,0.6)">spriteEventData</code>.
+          <code>spriteEventData</code>.
           This means data persists across page refreshes and browser restarts on the same device,
           but is isolated to that tablet. No server or internet connection is required.
         </p>
         <p>
           <strong>Data tracked:</strong> global total plays · global bottles given ·
-          global stress balls given · per-day records (date, plays, bottles, stress balls).
+          global stress balls given · global Bowfell Plus given ·
+          per-day records (date, plays, bottles, stress balls, Bowfell Plus).
         </p>
       </div>
     </div>
@@ -538,7 +586,7 @@
         </div>
       </div>
       <div class="card">
-        <p>Add a <code style="background:rgba(255,255,255,0.08);border-radius:4px;padding:1px 6px;font-size:12px;color:#C6F135">?preview=</code> URL parameter to jump directly to any screen without playing through the full flow. Has no effect in the production build.</p>
+        <p>Add a <code style="color:#C6F135">?preview=</code> URL parameter to jump directly to any screen without playing through the full flow. Has no effect in the production build.</p>
         <div class="url-list">
           <div class="url-row">
             <span class="url-code">/?preview=win-ball</span>
@@ -546,7 +594,11 @@
           </div>
           <div class="url-row">
             <span class="url-code">/?preview=win-bottle</span>
-            <span class="url-desc">Win screen · bottle</span>
+            <span class="url-desc">Win screen · Sprite Bottle</span>
+          </div>
+          <div class="url-row">
+            <span class="url-code">/?preview=win-bowfell</span>
+            <span class="url-desc">Win screen · Majority Bowfell Plus</span>
           </div>
           <div class="url-row">
             <span class="url-code">/?preview=quiz</span>
@@ -585,9 +637,10 @@ public/assets/<br>
 ├── <span style="color:#C6F135">can-regular-normal.png</span> Regular can (default)<br>
 ├── <span style="color:#C6F135">can-regular-glow.png</span> &nbsp; Regular can (selected)<br>
 ├── GIFTS/<br>
-│ &nbsp;&nbsp;├── <span style="color:#7ee8a2">GIFT_SCREEN_BG.png</span> &nbsp; Win screen background<br>
-│ &nbsp;&nbsp;├── <span style="color:#7ee8a2">SPRITE_BOTTLE.png</span> &nbsp;&nbsp; Bottle prize image<br>
-│ &nbsp;&nbsp;└── <span style="color:#7ee8a2">stress-ball.png</span> &nbsp;&nbsp;&nbsp;&nbsp; Stress ball prize image<br>
+│ &nbsp;&nbsp;├── <span style="color:#7ee8a2">GIFT_SCREEN_BG.png</span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Win screen background<br>
+│ &nbsp;&nbsp;├── <span style="color:#7ee8a2">SPRITE_BOTTLE.png</span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Sprite Bottle prize<br>
+│ &nbsp;&nbsp;├── <span style="color:#7ee8a2">stress-ball.png</span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Antistress Ball prize<br>
+│ &nbsp;&nbsp;└── <span style="color:#f5a623">Majority_Bowfell_Plus.png</span> &nbsp; Majority Bowfell Plus prize<br>
 └── fonts/<br>
 &nbsp;&nbsp;&nbsp;&nbsp;└── MontserratZ (9 weights, .otf — self-hosted for offline use)
         </div>

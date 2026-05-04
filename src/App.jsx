@@ -8,6 +8,7 @@ function getPreview() {
   const p = new URLSearchParams(window.location.search).get('preview')
   if (p === 'win-bottle')  return { screen: 'win',      prize: 'bottle' }
   if (p === 'win-ball')    return { screen: 'win',      prize: 'stressBall' }
+  if (p === 'win-bowfell') return { screen: 'win',      prize: 'bowfell' }
   if (p === 'quiz')        return { screen: 'quiz',     prize: null }
   return null
 }

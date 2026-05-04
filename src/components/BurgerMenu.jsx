@@ -1,11 +1,6 @@
 import { useState } from 'react'
-import { getDashboardData, resetAllData } from '../services/prizeService'
+import { getDashboardData, resetAllData, advanceDay, EVENT_DAY_LABELS } from '../services/prizeService'
 import styles from './BurgerMenu.module.css'
-
-function formatDate(dateStr) {
-  const d = new Date(dateStr + 'T12:00:00')
-  return d.toLocaleDateString('el-GR', { weekday: 'short', day: '2-digit', month: '2-digit', year: 'numeric' })
-}
 
 function ProgressBar({ value, max, color }) {
   const pct = Math.min((value / max) * 100, 100)
@@ -20,9 +15,10 @@ function ProgressBar({ value, max, color }) {
 }
 
 export default function BurgerMenu() {
-  const [isOpen, setIsOpen]             = useState(false)
-  const [confirmReset, setConfirmReset] = useState(false)
-  const [data, setData]                 = useState(null)
+  const [isOpen,        setIsOpen]        = useState(false)
+  const [confirmReset,  setConfirmReset]  = useState(false)
+  const [confirmDay,    setConfirmDay]    = useState(false)
+  const [data,          setData]          = useState(null)
 
   const openMenu = () => {
     setData(getDashboardData())
@@ -35,9 +31,16 @@ export default function BurgerMenu() {
     setConfirmReset(false)
   }
 
+  const handleAdvanceDay = () => {
+    advanceDay()
+    setData(getDashboardData())
+    setConfirmDay(false)
+  }
+
   const handleClose = () => {
     setIsOpen(false)
     setConfirmReset(false)
+    setConfirmDay(false)
   }
 
   return (
@@ -55,6 +58,37 @@ export default function BurgerMenu() {
               <button className={styles.closeBtn} onClick={handleClose}>✕</button>
             </div>
 
+            {/* Current event day */}
+            <div className={styles.currentDayCard}>
+              <div className={styles.currentDayLeft}>
+                <span className={styles.currentDayLabel}>Event Day</span>
+                <span className={styles.currentDayValue}>Day {data.currentDay} / 3</span>
+                <span className={styles.currentDayDate}>{EVENT_DAY_LABELS[`day-${data.currentDay}`]}</span>
+              </div>
+              {data.currentDay < 3 && !confirmDay && (
+                <button className={styles.nextDayBtn} onClick={() => setConfirmDay(true)}>
+                  Start Day {data.currentDay + 1} →
+                </button>
+              )}
+              {data.currentDay === 3 && (
+                <span className={styles.lastDayBadge}>Final Day</span>
+              )}
+            </div>
+
+            {/* Confirm advance day */}
+            {confirmDay && (
+              <div className={styles.confirmBox}>
+                <p className={styles.confirmText}>
+                  Switch to <strong>Day {data.currentDay + 1}</strong>?<br />
+                  <strong>This cannot be undone.</strong> The Bowfell counter resets for the new day.
+                </p>
+                <div className={styles.confirmBtns}>
+                  <button className={styles.cancelBtn} onClick={() => setConfirmDay(false)}>Cancel</button>
+                  <button className={styles.confirmOkBtn} onClick={handleAdvanceDay}>Yes, Start Day {data.currentDay + 1}</button>
+                </div>
+              </div>
+            )}
+
             {/* Global totals */}
             <div className={styles.totalsCard}>
               <div className={styles.totalItem}>
@@ -70,6 +104,11 @@ export default function BurgerMenu() {
               <div className={styles.totalItem}>
                 <span className={styles.totalValue} style={{ color: '#7ee8a2' }}>{data.stressBallsGiven}</span>
                 <span className={styles.totalLabel}>Stress Balls</span>
+              </div>
+              <div className={styles.totalDivider} />
+              <div className={styles.totalItem}>
+                <span className={styles.totalValue} style={{ color: '#f5a623' }}>{data.bowfellGiven} / 3</span>
+                <span className={styles.totalLabel}>Bowfell Plus</span>
               </div>
             </div>
 
@@ -88,37 +127,43 @@ export default function BurgerMenu() {
               )}
             </div>
 
-            {/* Per-day breakdown */}
-            {data.days.length === 0 ? (
-              <p className={styles.noData}>No games recorded yet.</p>
-            ) : (
-              <div className={styles.daysList}>
-                <p className={styles.sectionLabel}>Daily Breakdown</p>
-                {data.days.map((day, i) => (
-                  <div key={day.date} className={styles.dayCard}>
-                    <div className={styles.dayHeader}>
-                      <span className={styles.dayBadge}>Day {i + 1}</span>
-                      <span className={styles.dayDate}>{formatDate(day.date)}</span>
-                      <span className={styles.dayGames}>{day.totalGames} plays</span>
-                    </div>
-                    <div className={styles.prizeRow}>
-                      <span className={styles.prizeIcon}>🍶</span>
-                      <div className={styles.prizeInfo}>
-                        <span className={styles.prizeLabelText}>Sprite Bottles</span>
-                        <ProgressBar value={day.bottlesGiven} max={10} color="#C6F135" />
-                      </div>
-                    </div>
-                    <div className={styles.prizeRow}>
-                      <span className={styles.prizeIcon}>🟢</span>
-                      <div className={styles.prizeInfo}>
-                        <span className={styles.prizeLabelText}>Antistress Balls</span>
-                        <ProgressBar value={day.stressBallsGiven} max={667} color="#7ee8a2" />
-                      </div>
+            {/* Per-day breakdown — always shows all 3 days */}
+            <div className={styles.daysList}>
+              <p className={styles.sectionLabel}>Daily Breakdown</p>
+              {data.days.map((day) => (
+                <div
+                  key={day.day}
+                  className={`${styles.dayCard} ${day.day === data.currentDay ? styles.dayCardActive : ''}`}
+                >
+                  <div className={styles.dayHeader}>
+                    <span className={styles.dayBadge}>Day {day.day}</span>
+                    <span className={styles.dayDate}>{EVENT_DAY_LABELS[`day-${day.day}`]}</span>
+                    <span className={styles.dayGames}>{day.totalGames} plays</span>
+                  </div>
+                  <div className={styles.prizeRow}>
+                    <span className={styles.prizeIcon}>🎽</span>
+                    <div className={styles.prizeInfo}>
+                      <span className={styles.prizeLabelText}>Majority Bowfell Plus</span>
+                      <ProgressBar value={day.bowfellGiven ?? 0} max={1} color="#f5a623" />
                     </div>
                   </div>
-                ))}
-              </div>
-            )}
+                  <div className={styles.prizeRow}>
+                    <span className={styles.prizeIcon}>🍶</span>
+                    <div className={styles.prizeInfo}>
+                      <span className={styles.prizeLabelText}>Sprite Bottles</span>
+                      <ProgressBar value={day.bottlesGiven} max={10} color="#C6F135" />
+                    </div>
+                  </div>
+                  <div className={styles.prizeRow}>
+                    <span className={styles.prizeIcon}>🟢</span>
+                    <div className={styles.prizeInfo}>
+                      <span className={styles.prizeLabelText}>Antistress Balls</span>
+                      <ProgressBar value={day.stressBallsGiven} max={667} color="#7ee8a2" />
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
 
             {/* Reset */}
             {!confirmReset ? (

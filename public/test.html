@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sprite App — Prize Simulator</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: #071a0c;
+      font-family: system-ui, -apple-system, sans-serif;
+      color: #fff;
+      min-height: 100vh;
+      padding: 40px 20px 80px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .wrapper { width: 100%; max-width: 620px; display: flex; flex-direction: column; gap: 24px; }
+
+    /* Header */
+    .header { text-align: center; display: flex; flex-direction: column; align-items: center; gap: 10px; padding-bottom: 24px; border-bottom: 1px solid rgba(255,255,255,0.07); }
+    .badge { display: inline-flex; align-items: center; gap: 6px; background: rgba(245,166,35,0.12); border: 1px solid rgba(245,166,35,0.35); border-radius: 50px; padding: 5px 14px; font-size: 11px; font-weight: 700; color: #f5a623; letter-spacing: 0.12em; text-transform: uppercase; }
+    .dot { width: 6px; height: 6px; background: #f5a623; border-radius: 50%; animation: pulse 1.8s ease-in-out infinite; }
+    @keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:.4;transform:scale(.7)} }
+    h1 { font-size: 28px; font-weight: 800; letter-spacing: -0.02em; }
+    h1 span { color: #C6F135; }
+    .subtitle { font-size: 13px; color: rgba(255,255,255,0.4); line-height: 1.5; }
+
+    /* Day control */
+    .day-panel { background: rgba(245,166,35,0.08); border: 1px solid rgba(245,166,35,0.3); border-radius: 14px; padding: 14px 18px; display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+    .day-info { display: flex; flex-direction: column; gap: 2px; }
+    .day-label { font-size: 10px; font-weight: 700; color: rgba(245,166,35,0.6); text-transform: uppercase; letter-spacing: 0.1em; }
+    .day-value { font-size: 20px; font-weight: 800; color: #f5a623; }
+    .day-date  { font-size: 12px; color: rgba(255,255,255,0.4); }
+    .day-btn { padding: 9px 16px; background: rgba(245,166,35,0.15); border: 1px solid rgba(245,166,35,0.4); border-radius: 10px; color: #f5a623; font-size: 13px; font-weight: 700; cursor: pointer; white-space: nowrap; transition: background 0.2s; }
+    .day-btn:hover { background: rgba(245,166,35,0.25); }
+    .day-btn:disabled { opacity: 0.3; cursor: not-allowed; }
+
+    /* State panel */
+    .state-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
+    .state-card { background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; padding: 14px 10px; text-align: center; display: flex; flex-direction: column; gap: 4px; }
+    .state-value { font-size: 24px; font-weight: 800; color: #C6F135; line-height: 1; }
+    .state-label { font-size: 10px; color: rgba(255,255,255,0.35); text-transform: uppercase; letter-spacing: 0.08em; }
+    .state-value.orange { color: #f5a623; }
+    .state-value.teal   { color: #7ee8a2; }
+
+    /* Today panel */
+    .today-panel { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.07); border-radius: 14px; padding: 16px 18px; display: flex; gap: 24px; align-items: center; flex-wrap: wrap; }
+    .today-label { font-size: 11px; font-weight: 700; color: rgba(255,255,255,0.3); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 4px; }
+    .today-val { font-size: 20px; font-weight: 800; }
+    .today-sub { font-size: 11px; color: rgba(255,255,255,0.35); margin-top: 2px; }
+    .next-badge { background: rgba(198,241,53,0.12); border: 1px solid rgba(198,241,53,0.25); border-radius: 8px; padding: 6px 12px; font-size: 12px; color: #C6F135; white-space: nowrap; }
+    .next-badge.orange { background: rgba(245,166,35,0.12); border-color: rgba(245,166,35,0.25); color: #f5a623; }
+
+    /* Buttons */
+    .btn-row { display: flex; gap: 8px; flex-wrap: wrap; }
+    .btn { flex: 1; min-width: 100px; padding: 14px 10px; border: none; border-radius: 12px; font-size: 13px; font-weight: 700; cursor: pointer; transition: opacity 0.15s, transform 0.1s; }
+    .btn:active { transform: scale(0.97); }
+    .btn:hover  { opacity: 0.85; }
+    .btn-play  { background: #C6F135; color: #071a0c; font-size: 15px; }
+    .btn-x10   { background: rgba(198,241,53,0.15); color: #C6F135; border: 1px solid rgba(198,241,53,0.3); }
+    .btn-x50   { background: rgba(198,241,53,0.1);  color: #C6F135; border: 1px solid rgba(198,241,53,0.2); }
+    .btn-jump  { background: rgba(245,166,35,0.15); color: #f5a623; border: 1px solid rgba(245,166,35,0.3); }
+    .btn-reset { background: rgba(255,80,80,0.12);  color: #ff7070; border: 1px solid rgba(255,80,80,0.25); }
+
+    /* Result flash */
+    .result-flash { border-radius: 14px; padding: 18px 20px; display: flex; align-items: center; gap: 14px; transition: background 0.3s, border-color 0.3s; border: 1px solid transparent; min-height: 72px; }
+    .result-flash.ball    { background: rgba(126,232,162,0.08); border-color: rgba(126,232,162,0.2); }
+    .result-flash.bottle  { background: rgba(198,241,53,0.08);  border-color: rgba(198,241,53,0.25); }
+    .result-flash.bowfell { background: rgba(245,166,35,0.12);  border-color: rgba(245,166,35,0.4); animation: glow 1s ease-out; }
+    .result-flash.empty   { background: rgba(255,255,255,0.02); border-color: rgba(255,255,255,0.06); }
+    @keyframes glow { 0%{box-shadow:0 0 0 0 rgba(245,166,35,0.5)} 50%{box-shadow:0 0 30px 8px rgba(245,166,35,0.3)} 100%{box-shadow:0 0 0 0 rgba(245,166,35,0)} }
+
+    .result-emoji { font-size: 32px; flex-shrink: 0; }
+    .result-body  { flex: 1; }
+    .result-name  { font-size: 16px; font-weight: 700; }
+    .result-meta  { font-size: 12px; color: rgba(255,255,255,0.4); margin-top: 3px; }
+    .result-flash.ball    .result-name { color: #7ee8a2; }
+    .result-flash.bottle  .result-name { color: #C6F135; }
+    .result-flash.bowfell .result-name { color: #f5a623; font-size: 18px; }
+
+    /* Log */
+    .log-list { display: flex; flex-direction: column; gap: 4px; max-height: 260px; overflow-y: auto; }
+    .log-list::-webkit-scrollbar { width: 4px; }
+    .log-list::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 2px; }
+    .log-row { display: flex; align-items: center; gap: 10px; padding: 7px 12px; border-radius: 8px; font-size: 13px; background: rgba(255,255,255,0.02); }
+    .log-row.bottle  { background: rgba(198,241,53,0.05); }
+    .log-row.bowfell { background: rgba(245,166,35,0.1); }
+    .log-play  { font-size: 11px; color: rgba(255,255,255,0.25); width: 54px; flex-shrink: 0; }
+    .log-today { font-size: 11px; color: rgba(255,255,255,0.2); width: 54px; flex-shrink: 0; }
+    .log-emoji { font-size: 16px; flex-shrink: 0; }
+    .log-name  { flex: 1; color: rgba(255,255,255,0.7); }
+    .log-row.bottle  .log-name { color: #C6F135; }
+    .log-row.bowfell .log-name { color: #f5a623; font-weight: 700; }
+    .log-empty { font-size: 13px; color: rgba(255,255,255,0.2); padding: 12px; text-align: center; }
+
+    .section-label { font-size: 11px; font-weight: 700; color: rgba(255,255,255,0.25); text-transform: uppercase; letter-spacing: 0.12em; }
+  </style>
+</head>
+<body>
+<div class="wrapper">
+
+  <div class="header">
+    <div class="badge"><div class="dot"></div> Simulator Mode</div>
+    <h1>Prize <span>Simulator</span></h1>
+    <p class="subtitle">Uses the same localStorage as the real app.<br>Simulate plays and advance event days manually — no clock needed.</p>
+  </div>
+
+  <!-- Event day control -->
+  <div>
+    <p class="section-label" style="margin-bottom:10px">Current Event Day</p>
+    <div class="day-panel">
+      <div class="day-info">
+        <span class="day-label">Active Day</span>
+        <span class="day-value" id="currentDayValue">Day 1 / 3</span>
+        <span class="day-date"  id="currentDayDate">Τετ 07/05/2026</span>
+      </div>
+      <button class="day-btn" id="nextDayBtn" onclick="advanceDay()">Start Day 2 →</button>
+    </div>
+  </div>
+
+  <!-- Global state -->
+  <div>
+    <p class="section-label" style="margin-bottom:10px">Global State</p>
+    <div class="state-grid">
+      <div class="state-card">
+        <span class="state-value" id="totalGames">0</span>
+        <span class="state-label">Total Plays</span>
+      </div>
+      <div class="state-card">
+        <span class="state-value" id="bottlesGiven">0</span>
+        <span class="state-label">Bottles</span>
+      </div>
+      <div class="state-card">
+        <span class="state-value teal" id="ballsGiven">0</span>
+        <span class="state-label">Stress Balls</span>
+      </div>
+      <div class="state-card">
+        <span class="state-value orange" id="bowfellGiven">0 / 3</span>
+        <span class="state-label">Bowfell Plus</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Today state -->
+  <div>
+    <p class="section-label" style="margin-bottom:10px">Today's Counter</p>
+    <div class="today-panel">
+      <div>
+        <div class="today-label">Plays today</div>
+        <div class="today-val" id="todayPlays">0</div>
+        <div class="today-sub">Bowfell at play #100</div>
+      </div>
+      <div>
+        <div class="today-label">Bowfell today</div>
+        <div class="today-val" id="todayBowfell" style="color:#f5a623">—</div>
+      </div>
+      <div id="nextPrizeHint" class="next-badge">Next: Stress Ball</div>
+    </div>
+  </div>
+
+  <!-- Last result -->
+  <div class="result-flash empty" id="resultFlash">
+    <div class="result-emoji" id="resultEmoji">🎮</div>
+    <div class="result-body">
+      <div class="result-name" id="resultName">Press Play to simulate a play</div>
+      <div class="result-meta" id="resultMeta">Prize will appear here</div>
+    </div>
+  </div>
+
+  <!-- Action buttons -->
+  <div class="btn-row">
+    <button class="btn btn-play" onclick="simulate(1)">▶ Play Once</button>
+    <button class="btn btn-x10"  onclick="simulate(10)">× 10</button>
+    <button class="btn btn-x50"  onclick="simulate(50)">× 50</button>
+  </div>
+  <div class="btn-row">
+    <button class="btn btn-jump"  onclick="jumpToPreBowfell()">⚡ Jump to play #99 today</button>
+    <button class="btn btn-reset" onclick="resetData()">🗑 Reset All Data</button>
+  </div>
+
+  <!-- Log -->
+  <div>
+    <p class="section-label" style="margin-bottom:10px">Play Log <span style="color:rgba(255,255,255,0.2);font-weight:400">(last 50)</span></p>
+    <div class="log-list" id="logList">
+      <p class="log-empty">No plays yet — hit Play to start.</p>
+    </div>
+  </div>
+
+</div>
+
+<script>
+  const STORAGE_KEY     = 'spriteEventData'
+  const BOTTLE_INTERVAL = 66
+  const TOTAL_BOTTLES   = 30
+  const TOTAL_BOWFELL   = 3
+
+  const DAY_LABELS = {
+    1: 'Τετ 07/05/2026',
+    2: 'Πεμ 08/05/2026',
+    3: 'Παρ 09/05/2026',
+  }
+
+  const PRIZE_CONFIG = {
+    stressBall: { emoji: '🟢', name: 'Antistress Ball',       cls: 'ball'    },
+    bottle:     { emoji: '🍶', name: 'Sprite Bottle',         cls: 'bottle'  },
+    bowfell:    { emoji: '🎽', name: 'Majority Bowfell Plus', cls: 'bowfell' },
+  }
+
+  let log = []
+
+  function getAllData() {
+    try {
+      const s = localStorage.getItem(STORAGE_KEY)
+      if (s) {
+        const d = JSON.parse(s)
+        if (d.bowfellGiven === undefined) d.bowfellGiven = 0
+        if (d.currentDay  === undefined) d.currentDay   = 1
+        return d
+      }
+    } catch {}
+    return { totalGames: 0, bottlesGiven: 0, stressBallsGiven: 0, bowfellGiven: 0, currentDay: 1, days: {} }
+  }
+
+  function saveData(data) {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(data))
+  }
+
+  function determinePrize() {
+    const data   = getAllData()
+    const dayKey = `day-${data.currentDay}`
+
+    data.totalGames++
+
+    if (!data.days[dayKey]) {
+      data.days[dayKey] = { day: data.currentDay, totalGames: 0, bottlesGiven: 0, stressBallsGiven: 0, bowfellGiven: 0 }
+    }
+    if (data.days[dayKey].bowfellGiven === undefined) data.days[dayKey].bowfellGiven = 0
+    data.days[dayKey].totalGames++
+
+    const isHundredthPlay = data.days[dayKey].totalGames === 100
+    const todayHasBowfell = data.days[dayKey].bowfellGiven > 0
+    const bowfellLeft     = data.bowfellGiven < TOTAL_BOWFELL
+
+    let prize
+    if (isHundredthPlay && bowfellLeft && !todayHasBowfell) {
+      prize = 'bowfell'
+      data.bowfellGiven++
+      data.days[dayKey].bowfellGiven++
+    } else {
+      const isBottleTurn = data.totalGames % BOTTLE_INTERVAL === 0
+      const bottlesLeft  = data.bottlesGiven < TOTAL_BOTTLES
+      if (isBottleTurn && bottlesLeft) {
+        prize = 'bottle'
+        data.bottlesGiven++
+        data.days[dayKey].bottlesGiven++
+      } else {
+        prize = 'stressBall'
+        data.stressBallsGiven++
+        data.days[dayKey].stressBallsGiven++
+      }
+    }
+
+    saveData(data)
+    return { prize, totalGames: data.totalGames, dayGames: data.days[dayKey].totalGames, currentDay: data.currentDay }
+  }
+
+  function simulate(n) {
+    let last
+    for (let i = 0; i < n; i++) last = determinePrize()
+    showResult(n === 1 ? last : { ...last, bulk: n })
+    addToLog(last, n)
+    updateUI()
+  }
+
+  function advanceDay() {
+    const data = getAllData()
+    if (data.currentDay >= 3) return
+    if (!confirm(`Switch to Day ${data.currentDay + 1}?\nThis cannot be undone.`)) return
+    data.currentDay++
+    saveData(data)
+    log = []
+    renderLog()
+    resetResult()
+    updateUI()
+  }
+
+  function showResult({ prize, totalGames, dayGames, bulk }) {
+    const cfg   = PRIZE_CONFIG[prize]
+    const flash = document.getElementById('resultFlash')
+    flash.className = `result-flash ${cfg.cls}`
+    document.getElementById('resultEmoji').textContent = cfg.emoji
+    document.getElementById('resultName').textContent  = bulk ? `Last of ${bulk} plays: ${cfg.name}` : cfg.name
+    document.getElementById('resultMeta').textContent  = `Global play #${totalGames} · Day play #${dayGames}`
+  }
+
+  function addToLog(result, bulk) {
+    log.unshift(bulk > 1 ? { ...result, bulk } : result)
+    if (log.length > 50) log = log.slice(0, 50)
+    renderLog()
+  }
+
+  function renderLog() {
+    const el = document.getElementById('logList')
+    if (log.length === 0) {
+      el.innerHTML = '<p class="log-empty">No plays yet — hit Play to start.</p>'
+      return
+    }
+    el.innerHTML = log.map(e => {
+      const cfg   = PRIZE_CONFIG[e.prize]
+      const label = e.bulk ? `×${e.bulk} fast-forward — last result` : cfg.name
+      return `<div class="log-row ${cfg.cls}">
+        <span class="log-play">#${e.totalGames}</span>
+        <span class="log-today">day${e.currentDay}:#${e.dayGames}</span>
+        <span class="log-emoji">${cfg.emoji}</span>
+        <span class="log-name">${label}</span>
+      </div>`
+    }).join('')
+  }
+
+  function updateUI() {
+    const data   = getAllData()
+    const dayKey = `day-${data.currentDay}`
+    const today  = data.days[dayKey] || { totalGames: 0, bowfellGiven: 0 }
+
+    document.getElementById('totalGames').textContent   = data.totalGames
+    document.getElementById('bottlesGiven').textContent = data.bottlesGiven
+    document.getElementById('ballsGiven').textContent   = data.stressBallsGiven
+    document.getElementById('bowfellGiven').textContent = `${data.bowfellGiven} / 3`
+    document.getElementById('todayPlays').textContent   = today.totalGames
+    document.getElementById('todayBowfell').textContent = today.bowfellGiven > 0 ? '✓ Given' : 'Not yet'
+
+    // Day panel
+    document.getElementById('currentDayValue').textContent = `Day ${data.currentDay} / 3`
+    document.getElementById('currentDayDate').textContent  = DAY_LABELS[data.currentDay]
+    const nextDayBtn = document.getElementById('nextDayBtn')
+    if (data.currentDay >= 3) {
+      nextDayBtn.textContent = 'Final Day'
+      nextDayBtn.disabled = true
+    } else {
+      nextDayBtn.textContent = `Start Day ${data.currentDay + 1} →`
+      nextDayBtn.disabled = false
+    }
+
+    // Next prize hint
+    const hint         = document.getElementById('nextPrizeHint')
+    const nextDayGames = today.totalGames + 1
+    const bowfellAvail = data.bowfellGiven < TOTAL_BOWFELL && today.bowfellGiven === 0
+
+    if (bowfellAvail && nextDayGames === 100) {
+      hint.textContent = '🎽 NEXT: Majority Bowfell Plus!'
+      hint.className = 'next-badge orange'
+    } else if (bowfellAvail) {
+      const left = 100 - nextDayGames
+      hint.textContent = `🎽 Bowfell in ${left} play${left === 1 ? '' : 's'}`
+      hint.className = 'next-badge orange'
+    } else if ((data.totalGames + 1) % BOTTLE_INTERVAL === 0 && data.bottlesGiven < TOTAL_BOTTLES) {
+      hint.textContent = '🍶 NEXT: Sprite Bottle!'
+      hint.className = 'next-badge'
+    } else if (data.bottlesGiven < TOTAL_BOTTLES) {
+      const left = BOTTLE_INTERVAL - (data.totalGames % BOTTLE_INTERVAL)
+      hint.textContent = `🍶 Bottle in ${left} play${left === 1 ? '' : 's'}`
+      hint.className = 'next-badge'
+    } else {
+      hint.textContent = 'Next: Stress Ball'
+      hint.className = 'next-badge'
+    }
+  }
+
+  function jumpToPreBowfell() {
+    const data   = getAllData()
+    const dayKey = `day-${data.currentDay}`
+    const today  = data.days[dayKey] || { totalGames: 0 }
+    const needed = 99 - today.totalGames
+    if (needed <= 0) {
+      alert(`Day ${data.currentDay} already has ${today.totalGames} plays. Play #100 is ${today.totalGames >= 100 ? 'already past' : 'the next one'}!`)
+      return
+    }
+    simulate(needed)
+  }
+
+  function resetResult() {
+    const flash = document.getElementById('resultFlash')
+    flash.className = 'result-flash empty'
+    document.getElementById('resultEmoji').textContent = '🎮'
+    document.getElementById('resultName').textContent  = 'Press Play to simulate a play'
+    document.getElementById('resultMeta').textContent  = 'Prize will appear here'
+  }
+
+  function resetData() {
+    if (!confirm('Reset ALL prize data? This cannot be undone.')) return
+    localStorage.removeItem(STORAGE_KEY)
+    log = []
+    renderLog()
+    resetResult()
+    updateUI()
+  }
+
+  updateUI()
+</script>
+</body>
+</html>

@@ -141,6 +141,83 @@
 }
 .submitBtn:active { opacity: 0.8; }
 
+/* ── Current day card ── */
+.currentDayCard {
+  background: rgba(245,166,35,0.08);
+  border: 1px solid rgba(245,166,35,0.3);
+  border-radius: 16px;
+  padding: 14px 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.currentDayLeft {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.currentDayLabel {
+  font-family: 'MontserratZ', sans-serif;
+  font-size: 10px;
+  font-weight: 700;
+  color: rgba(245,166,35,0.6);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+.currentDayValue {
+  font-family: 'MontserratZ', sans-serif;
+  font-weight: 900;
+  font-size: 20px;
+  color: #f5a623;
+  line-height: 1.1;
+}
+
+.currentDayDate {
+  font-family: 'MontserratZ', sans-serif;
+  font-size: 12px;
+  color: rgba(255,255,255,0.45);
+}
+
+.nextDayBtn {
+  font-family: 'MontserratZ', sans-serif;
+  font-weight: 700;
+  font-size: 13px;
+  color: #f5a623;
+  background: rgba(245,166,35,0.15);
+  border: 1px solid rgba(245,166,35,0.4);
+  border-radius: 10px;
+  padding: 10px 16px;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  transition: background 0.2s;
+  white-space: nowrap;
+}
+.nextDayBtn:hover { background: rgba(245,166,35,0.25); }
+.nextDayBtn:active { opacity: 0.8; }
+
+.lastDayBadge {
+  font-family: 'MontserratZ', sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  color: rgba(245,166,35,0.6);
+  background: rgba(245,166,35,0.1);
+  border: 1px solid rgba(245,166,35,0.2);
+  border-radius: 8px;
+  padding: 6px 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+/* ── Active day highlight ── */
+.dayCardActive {
+  border-color: rgba(198,241,53,0.35);
+  background: rgba(198,241,53,0.05);
+}
+
 /* ── Totals card ── */
 .totalsCard {
   background: rgba(198,241,53,0.07);

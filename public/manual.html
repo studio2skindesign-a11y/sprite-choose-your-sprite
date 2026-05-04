@@ -1,0 +1,689 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sprite App — Οδηγίες Προσωπικού</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: #071a0c;
+      font-family: system-ui, -apple-system, sans-serif;
+      color: #fff;
+      min-height: 100vh;
+      padding: 48px 20px 80px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .wrapper {
+      width: 100%;
+      max-width: 640px;
+      display: flex;
+      flex-direction: column;
+      gap: 36px;
+    }
+
+    /* ── Header ── */
+    .header {
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+      padding-bottom: 36px;
+      border-bottom: 1px solid rgba(255,255,255,0.07);
+    }
+
+    .logo-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(198,241,53,0.1);
+      border: 1px solid rgba(198,241,53,0.3);
+      border-radius: 50px;
+      padding: 6px 16px;
+      font-size: 11px;
+      font-weight: 700;
+      color: #C6F135;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+
+    h1 {
+      font-size: 32px;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      line-height: 1.15;
+    }
+
+    h1 span { color: #C6F135; }
+
+    .header-sub {
+      font-size: 14px;
+      color: rgba(255,255,255,0.4);
+      line-height: 1.6;
+    }
+
+    /* ── Section ── */
+    .section {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .section-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .section-icon {
+      width: 44px;
+      height: 44px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      flex-shrink: 0;
+      background: rgba(198,241,53,0.1);
+    }
+
+    .section-icon.orange { background: rgba(245,166,35,0.12); }
+    .section-icon.red    { background: rgba(255,80,80,0.1); }
+
+    h2 {
+      font-size: 18px;
+      font-weight: 700;
+    }
+
+    .section-num {
+      font-size: 11px;
+      font-weight: 700;
+      color: rgba(198,241,53,0.5);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+
+    /* ── Card ── */
+    .card {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 16px;
+      padding: 20px 22px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .card.green  { background: rgba(198,241,53,0.05);  border-color: rgba(198,241,53,0.2); }
+    .card.orange { background: rgba(245,166,35,0.06);  border-color: rgba(245,166,35,0.25); }
+    .card.red    { background: rgba(255,80,80,0.05);   border-color: rgba(255,80,80,0.2); }
+
+    p {
+      font-size: 14px;
+      color: rgba(255,255,255,0.65);
+      line-height: 1.7;
+    }
+
+    strong { color: #fff; font-weight: 600; }
+
+    /* ── Steps ── */
+    .steps { display: flex; flex-direction: column; gap: 0; }
+
+    .step {
+      display: flex;
+      align-items: flex-start;
+      gap: 16px;
+      padding: 16px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+    }
+    .step:last-child  { border-bottom: none; padding-bottom: 0; }
+    .step:first-child { padding-top: 0; }
+
+    .step-num {
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      background: #C6F135;
+      color: #071a0c;
+      font-size: 14px;
+      font-weight: 800;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+
+    .step-num.orange { background: #f5a623; }
+
+    .step-body { flex: 1; }
+    .step-title { font-size: 15px; font-weight: 700; color: #fff; margin-bottom: 5px; }
+    .step-desc  { font-size: 13px; color: rgba(255,255,255,0.5); line-height: 1.65; }
+
+    /* ── Day schedule ── */
+    .day-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .day-row {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 14px 16px;
+      border-radius: 12px;
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.07);
+    }
+
+    .day-row.active {
+      background: rgba(198,241,53,0.06);
+      border-color: rgba(198,241,53,0.25);
+    }
+
+    .day-badge {
+      font-size: 12px;
+      font-weight: 800;
+      color: #071a0c;
+      background: #C6F135;
+      border-radius: 6px;
+      padding: 3px 10px;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    .day-info { flex: 1; }
+    .day-name { font-size: 14px; font-weight: 700; color: #fff; }
+    .day-action { font-size: 12px; color: rgba(255,255,255,0.45); margin-top: 2px; }
+
+    .day-tag {
+      font-size: 11px;
+      font-weight: 700;
+      padding: 4px 10px;
+      border-radius: 50px;
+      white-space: nowrap;
+    }
+    .tag-auto   { background: rgba(126,232,162,0.15); color: #7ee8a2; }
+    .tag-manual { background: rgba(245,166,35,0.15);  color: #f5a623; }
+
+    /* ── Prize table ── */
+    .prize-table { display: flex; flex-direction: column; gap: 8px; }
+
+    .prize-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 16px;
+      border-radius: 12px;
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.07);
+    }
+
+    .prize-row.special {
+      background: rgba(245,166,35,0.06);
+      border-color: rgba(245,166,35,0.2);
+    }
+
+    .prize-emoji { font-size: 22px; width: 32px; text-align: center; flex-shrink: 0; }
+    .prize-info  { flex: 1; }
+    .prize-name  { font-size: 14px; font-weight: 700; color: #fff; margin-bottom: 2px; }
+    .prize-desc  { font-size: 12px; color: rgba(255,255,255,0.4); line-height: 1.5; }
+
+    .prize-tag {
+      font-size: 11px;
+      font-weight: 700;
+      padding: 4px 10px;
+      border-radius: 50px;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+    .tag-lime   { background: rgba(198,241,53,0.15);  color: #C6F135; }
+    .tag-teal   { background: rgba(126,232,162,0.15); color: #7ee8a2; }
+    .tag-orange { background: rgba(245,166,35,0.15);  color: #f5a623; }
+
+    /* ── Alert box ── */
+    .alert {
+      border-radius: 12px;
+      padding: 16px 18px;
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      font-size: 14px;
+      line-height: 1.6;
+    }
+
+    .alert.green  { background: rgba(198,241,53,0.08);  border: 1px solid rgba(198,241,53,0.25); color: rgba(255,255,255,0.75); }
+    .alert.orange { background: rgba(245,166,35,0.08);  border: 1px solid rgba(245,166,35,0.25); color: rgba(255,255,255,0.75); }
+    .alert.red    { background: rgba(255,80,80,0.08);   border: 1px solid rgba(255,80,80,0.25);  color: rgba(255,255,255,0.75); }
+
+    .alert-icon { font-size: 20px; flex-shrink: 0; margin-top: 1px; }
+
+    /* ── DO / DON'T ── */
+    .do-dont { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+
+    .do-card, .dont-card {
+      border-radius: 12px;
+      padding: 14px 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .do-card   { background: rgba(198,241,53,0.05); border: 1px solid rgba(198,241,53,0.2); }
+    .dont-card { background: rgba(255,80,80,0.05);  border: 1px solid rgba(255,80,80,0.2); }
+
+    .do-title, .dont-title {
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+    .do-title   { color: #C6F135; }
+    .dont-title { color: #ff7070; }
+
+    .do-item, .dont-item {
+      display: flex;
+      gap: 8px;
+      font-size: 13px;
+      color: rgba(255,255,255,0.65);
+      line-height: 1.5;
+    }
+
+    .do-item::before   { content: '✓'; color: #C6F135; font-weight: 700; flex-shrink: 0; }
+    .dont-item::before { content: '✗'; color: #ff7070; font-weight: 700; flex-shrink: 0; }
+
+    /* ── Divider / Footer ── */
+    .divider { height: 1px; background: rgba(255,255,255,0.06); }
+
+    .footer {
+      text-align: center;
+      font-size: 12px;
+      color: rgba(255,255,255,0.2);
+      line-height: 1.8;
+    }
+
+    a { color: #C6F135; text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    /* ── Print / PDF ── */
+    @media print {
+      @page { margin: 18mm 16mm; size: A4; }
+
+      body {
+        background: #fff !important;
+        color: #000 !important;
+        padding: 0 !important;
+        font-size: 12px;
+      }
+
+      .wrapper { gap: 20px; max-width: 100%; }
+
+      /* Section page-break hints */
+      .section { page-break-inside: avoid; }
+      .section:nth-child(5) { page-break-before: always; }
+
+      /* Cards & rows */
+      .card, .day-row, .prize-row, .alert, .do-card, .dont-card {
+        border: 1px solid #bbb !important;
+        background: #f7f7f7 !important;
+        page-break-inside: avoid;
+      }
+      .card.green,  .alert.green,  .do-card   { background: #f0fff4 !important; border-color: #6fcf97 !important; }
+      .card.orange, .alert.orange              { background: #fff8ee !important; border-color: #f5a623 !important; }
+      .card.red,    .alert.red,    .dont-card  { background: #fff0f0 !important; border-color: #eb5757 !important; }
+      .prize-row.special { background: #fff8ee !important; border-color: #f5a623 !important; }
+      .day-row.active { background: #f0fff4 !important; border-color: #6fcf97 !important; }
+
+      /* Text colours */
+      h1, h2, .step-title, .day-name, .prize-name,
+      .flow-title, strong { color: #000 !important; }
+
+      p, .step-desc, .day-action, .prize-desc,
+      .do-item, .dont-item, .alert { color: #222 !important; }
+
+      .section-num  { color: #555 !important; }
+      .header-sub, .subtitle, .day-action, .prize-desc { color: #444 !important; }
+      .do-title   { color: #1a7a3a !important; }
+      .dont-title { color: #c0392b !important; }
+      .do-item::before   { color: #1a7a3a !important; }
+      .dont-item::before { color: #c0392b !important; }
+
+      /* Badges & tags */
+      .step-num            { background: #c8e820 !important; color: #000 !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+      .step-num.orange     { background: #f5a623 !important; color: #fff !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+      .day-badge           { background: #c8e820 !important; color: #000 !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+      .day-tag, .prize-tag { color: #333 !important; border: 1px solid #bbb !important; background: #eee !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+      .logo-badge          { background: #eee !important; color: #333 !important; border-color: #bbb !important; }
+
+      /* Header */
+      h1 span { color: #3a8c00 !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+      .header { border-bottom-color: #ccc !important; padding-bottom: 16px; }
+
+      /* Divider & footer */
+      .divider { background: #ccc !important; }
+      .footer   { color: #888 !important; }
+      a         { color: #333 !important; text-decoration: none; }
+
+      /* Section icons */
+      .section-icon { background: #eee !important; border: 1px solid #ccc; }
+    }
+  </style>
+</head>
+<body>
+<div class="wrapper">
+
+  <!-- Header -->
+  <div class="header">
+    <div class="logo-badge">🟢 Sprite Activation — Staff Guide</div>
+    <h1>Οδηγίες <span>Προσωπικού</span></h1>
+    <p class="header-sub">
+      Sprite Brand Activation &nbsp;·&nbsp; 7, 8, 9 Μαΐου 2026<br>
+      Διαβάστε πριν ξεκινήσετε κάθε μέρα.
+    </p>
+  </div>
+
+  <!-- 1. Event days -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-icon">📅</div>
+      <div>
+        <div class="section-num">Βήμα 01</div>
+        <h2>Πρόγραμμα Ημερών</h2>
+      </div>
+    </div>
+
+    <div class="day-grid">
+      <div class="day-row">
+        <span class="day-badge">Day 1</span>
+        <div class="day-info">
+          <div class="day-name">Τετάρτη 7 Μαΐου</div>
+          <div class="day-action">Ανοίξτε την εφαρμογή — ξεκινάει αυτόματα στην Ημέρα 1</div>
+        </div>
+        <span class="day-tag tag-auto">Αυτόματο</span>
+      </div>
+      <div class="day-row">
+        <span class="day-badge">Day 2</span>
+        <div class="day-info">
+          <div class="day-name">Πέμπτη 8 Μαΐου</div>
+          <div class="day-action">Πριν ξεκινήσετε → ανοίξτε το μενού ☰ → πατήστε "Start Day 2 →"</div>
+        </div>
+        <span class="day-tag tag-manual">Χειροκίνητο</span>
+      </div>
+      <div class="day-row">
+        <span class="day-badge">Day 3</span>
+        <div class="day-info">
+          <div class="day-name">Παρασκευή 9 Μαΐου</div>
+          <div class="day-action">Πριν ξεκινήσετε → ανοίξτε το μενού ☰ → πατήστε "Start Day 3 →"</div>
+        </div>
+        <span class="day-tag tag-manual">Χειροκίνητο</span>
+      </div>
+    </div>
+
+    <div class="alert orange">
+      <span class="alert-icon">⚠️</span>
+      <span>Το πέρασμα στην επόμενη μέρα <strong>δεν γίνεται αυτόματα</strong>. Πρέπει να το κάνετε εσείς <strong>πριν αρχίσετε τη δουλειά</strong> κάθε πρωί (Day 2 και Day 3). Αν ξεχαστεί, τα δώρα της ημέρας μετρούν λάθος.</span>
+    </div>
+  </div>
+
+  <!-- 2. How to advance the day -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-icon orange">🔄</div>
+      <div>
+        <div class="section-num">Βήμα 02</div>
+        <h2>Πώς να Αλλάξετε Ημέρα</h2>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="steps">
+        <div class="step">
+          <div class="step-num">1</div>
+          <div class="step-body">
+            <div class="step-title">Ανοίξτε το μενού ☰</div>
+            <div class="step-desc">Πατήστε το εικονίδιο με τις τρεις γραμμές — πάνω δεξιά στην αρχική οθόνη.</div>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">2</div>
+          <div class="step-body">
+            <div class="step-title">Βρείτε την ένδειξη "Event Day"</div>
+            <div class="step-desc">Στην πορτοκαλί κάρτα στην κορυφή του dashboard βλέπετε ποια μέρα είναι ενεργή.</div>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">3</div>
+          <div class="step-body">
+            <div class="step-title">Πατήστε "Start Day 2 →" (ή Day 3)</div>
+            <div class="step-desc">Εμφανίζεται παράθυρο επιβεβαίωσης. Πατήστε <strong>"Yes, Start Day 2"</strong> για να συνεχίσετε.</div>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">4</div>
+          <div class="step-body">
+            <div class="step-title">Κλείστε το μενού και ξεκινήστε</div>
+            <div class="step-desc">Η εφαρμογή είναι έτοιμη. Οι μετρητές της νέας μέρας ξεκινούν από το μηδέν.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="alert red">
+      <span class="alert-icon">🚫</span>
+      <span>Το κουμπί <strong>"Start Day"</strong> <strong>δεν μπορεί να αναιρεθεί</strong>. Μην το πατήσετε την ώρα που παίζει κόσμος — μόνο πρωί πριν αρχίσει η δραστηριότητα.</span>
+    </div>
+  </div>
+
+  <!-- 3. How the game works -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-icon">🎮</div>
+      <div>
+        <div class="section-num">Βήμα 03</div>
+        <h2>Πώς Παίζεται το Παιχνίδι</h2>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="steps">
+        <div class="step">
+          <div class="step-num">1</div>
+          <div class="step-body">
+            <div class="step-title">Αρχική Οθόνη</div>
+            <div class="step-desc">Ο παίκτης πατάει ένα κουτί Sprite (Zero Sugar ή κανονικό) για να ξεκινήσει.</div>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">2</div>
+          <div class="step-body">
+            <div class="step-title">Ερώτηση Trivia</div>
+            <div class="step-desc">Εμφανίζεται μία ερώτηση με τρεις επιλογές. Ο παίκτης πρέπει να απαντήσει <strong>σωστά</strong> για να προχωρήσει.</div>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">3</div>
+          <div class="step-body">
+            <div class="step-title">Οθόνη Νίκης</div>
+            <div class="step-desc">Εμφανίζεται το δώρο. Ο παίκτης <strong>δείχνει την οθόνη</strong> στο προσωπικό και παραλαμβάνει το φυσικό δώρο.</div>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">4</div>
+          <div class="step-body">
+            <div class="step-title">Επιστροφή</div>
+            <div class="step-desc">Πατήστε "ΕΠΙΣΤΡΟΦΗ ΣΤΗΝ ΑΡΧΙΚΗ" για να επαναφέρετε την εφαρμογή για τον επόμενο παίκτη.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 4. Prizes -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-icon">🎁</div>
+      <div>
+        <div class="section-num">Βήμα 04</div>
+        <h2>Δώρα — Τι Παίρνει ο Καθένας</h2>
+      </div>
+    </div>
+
+    <div class="prize-table">
+      <div class="prize-row special">
+        <div class="prize-emoji">🎽</div>
+        <div class="prize-info">
+          <div class="prize-name">Majority Bowfell Plus</div>
+          <div class="prize-desc">Ο <strong>100ός παίκτης κάθε μέρας</strong> — μόνο 1 ανά μέρα, συνολικά 3 για όλο το event</div>
+        </div>
+        <span class="prize-tag tag-orange">Παίκτης #100</span>
+      </div>
+      <div class="prize-row">
+        <div class="prize-emoji">🍶</div>
+        <div class="prize-info">
+          <div class="prize-name">Sprite Bottle</div>
+          <div class="prize-desc">Κάθε 66ος παίκτης συνολικά — 30 μπουκάλια για όλο το event</div>
+        </div>
+        <span class="prize-tag tag-lime">Κάθε 66 παίκτες</span>
+      </div>
+      <div class="prize-row">
+        <div class="prize-emoji">🟢</div>
+        <div class="prize-info">
+          <div class="prize-name">Antistress Ball</div>
+          <div class="prize-desc">Όλοι οι υπόλοιποι παίκτες — ~2000 διαθέσιμα</div>
+        </div>
+        <span class="prize-tag tag-teal">Όλοι οι υπόλοιποι</span>
+      </div>
+    </div>
+
+    <div class="alert green">
+      <span class="alert-icon">✅</span>
+      <span>Η εφαρμογή <strong>αποφασίζει μόνη της</strong> ποιο δώρο δίνει. Εσείς απλά δίνετε το φυσικό δώρο που εμφανίζεται στην οθόνη. Δεν χρειάζεται να κάνετε τίποτα χειροκίνητα.</span>
+    </div>
+  </div>
+
+  <!-- 5. Dashboard -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-icon">📊</div>
+      <div>
+        <div class="section-num">Βήμα 05</div>
+        <h2>Dashboard — Παρακολούθηση Δώρων</h2>
+      </div>
+    </div>
+
+    <div class="card">
+      <p>Ανοίξτε το <strong>☰ μενού</strong> οποιαδήποτε στιγμή για να δείτε:</p>
+      <div class="steps">
+        <div class="step">
+          <div class="step-num" style="background:rgba(198,241,53,0.2);color:#C6F135;font-size:16px">📈</div>
+          <div class="step-body">
+            <div class="step-title">Συνολικά στατιστικά</div>
+            <div class="step-desc">Πόσοι παίκτες έχουν παίξει, πόσα μπουκάλια και stress balls έχουν δοθεί, πόσα Bowfell Plus έχουν απομείνει.</div>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num" style="background:rgba(198,241,53,0.2);color:#C6F135;font-size:16px">⏱</div>
+          <div class="step-body">
+            <div class="step-title">Επόμενο μπουκάλι</div>
+            <div class="step-desc">Πόσοι παίκτες απομένουν μέχρι το επόμενο Sprite Bottle.</div>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num" style="background:rgba(198,241,53,0.2);color:#C6F135;font-size:16px">📅</div>
+          <div class="step-body">
+            <div class="step-title">Ανάλυση ανά μέρα</div>
+            <div class="step-desc">Πλήρης λίστα δώρων για κάθε μέρα του event ξεχωριστά.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 6. Do / Don't -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-icon red">⚡</div>
+      <div>
+        <div class="section-num">Βήμα 06</div>
+        <h2>Σημαντικό — Τι να Κάνετε και Τι Όχι</h2>
+      </div>
+    </div>
+
+    <div class="do-dont">
+      <div class="do-card">
+        <div class="do-title">✓ Να κάνετε</div>
+        <div class="do-item">Αλλάξτε ημέρα στο μενού κάθε πρωί (Day 2 και Day 3)</div>
+        <div class="do-item">Δώστε το δώρο που εμφανίζεται στην οθόνη</div>
+        <div class="do-item">Πατήστε "ΕΠΙΣΤΡΟΦΗ" μετά από κάθε παίκτη</div>
+        <div class="do-item">Ελέγξτε τα στατιστικά από το ☰ μενού</div>
+      </div>
+      <div class="dont-card">
+        <div class="dont-title">✗ Να αποφεύγετε</div>
+        <div class="dont-item">Να αλλάξετε ημέρα την ώρα που παίζει κόσμος</div>
+        <div class="dont-item">Να κάνετε "Reset All Data" εκτός αν σας ζητηθεί</div>
+        <div class="dont-item">Να κλείσετε την εφαρμογή από το browser</div>
+        <div class="dont-item">Να αλλάξετε ημέρα δύο φορές</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 7. Troubleshooting -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-icon red">🛠</div>
+      <div>
+        <div class="section-num">Βήμα 07</div>
+        <h2>Αν Κάτι Πάει Στραβά</h2>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="steps">
+        <div class="step">
+          <div class="step-num orange">?</div>
+          <div class="step-body">
+            <div class="step-title">Η εφαρμογή δεν φορτώνει</div>
+            <div class="step-desc">Ανανεώστε τη σελίδα (swipe down ή κουμπί refresh). Αν δεν λυθεί, κλείστε και ανοίξτε ξανά τον browser.</div>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num orange">?</div>
+          <div class="step-body">
+            <div class="step-title">Η εφαρμογή έχει κολλήσει στην οθόνη νίκης</div>
+            <div class="step-desc">Πατήστε "ΕΠΙΣΤΡΟΦΗ ΣΤΗΝ ΑΡΧΙΚΗ" στην οθόνη. Αν δεν λειτουργεί, ανανεώστε τη σελίδα.</div>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num orange">?</div>
+          <div class="step-body">
+            <div class="step-title">Ξεχάσατε να αλλάξετε ημέρα</div>
+            <div class="step-desc">Αλλάξτε ημέρα το συντομότερο δυνατό από το ☰ μενού. Τα παιχνίδια που έγιναν θα καταγραφούν στη λανθασμένη μέρα, αλλά τα δώρα δίνονται κανονικά.</div>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num orange">?</div>
+          <div class="step-body">
+            <div class="step-title">Οτιδήποτε άλλο</div>
+            <div class="step-desc">Επικοινωνήστε με τον υπεύθυνο. <strong>Μην κάνετε Reset</strong> χωρίς να ρωτήσετε.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <div class="footer">
+    Sprite Brand Activation &nbsp;·&nbsp; 7–9 Μαΐου 2026<br>
+    <a href="/docs.html">Τεχνική Τεκμηρίωση</a> &nbsp;·&nbsp; <a href="/preview.html">Preview Mode</a>
+  </div>
+
+</div>
+</body>
+</html>

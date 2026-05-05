@@ -158,7 +158,7 @@ export default function BurgerMenu() {
                     <span className={styles.prizeIcon}>🟢</span>
                     <div className={styles.prizeInfo}>
                       <span className={styles.prizeLabelText}>Antistress Balls</span>
-                      <ProgressBar value={day.stressBallsGiven} max={667} color="#7ee8a2" />
+                      <span className={styles.plainCount}>{day.stressBallsGiven} given</span>
                     </div>
                   </div>
                 </div>
